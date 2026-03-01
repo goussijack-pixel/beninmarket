@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server'
  import Image from 'next/image' 
  import GalerieImages from '@/components/produits/GalerieImages' 
  import BoutonAjouterPanier from '@/components/panier/BoutonAjouterPanier' 
+ import BoutonWhatsAppDirect from '@/components/produits/BoutonWhatsAppDirect' 
  
  export default async function DetailProduitPage({ 
    params, 
@@ -61,6 +62,17 @@ import { createClient } from '@/lib/supabase/server'
              {produit.prix.toLocaleString('fr-FR')} FCFA 
            </p> 
  
+           {/* Statut Stock */} 
+           <div className="text-sm"> 
+             {produit.stock_illimite ? ( 
+               <span className="text-green-600 font-medium">✅ En stock (Illimité)</span> 
+             ) : (produit.stock || 0) > 0 ? ( 
+               <span className="text-orange-600 font-medium">📦 {produit.stock} articles restants</span> 
+             ) : ( 
+               <span className="text-red-600 font-bold">❌ Rupture de stock</span> 
+             )} 
+           </div> 
+ 
            {produit.description && ( 
              <p className="text-gray-600 leading-relaxed">{produit.description}</p> 
            )} 
@@ -69,17 +81,7 @@ import { createClient } from '@/lib/supabase/server'
            <div className="flex flex-col gap-3"> 
              <BoutonAjouterPanier produit={produit} fullWidth /> 
              
-             <a 
-               href={lienWhatsApp} 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               className="w-full" 
-             > 
-               <Button variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-50 hover:text-green-700 py-6 text-lg gap-3 rounded-xl"> 
-                 <MessageCircle className="w-6 h-6" /> 
-                 Commander via WhatsApp 
-               </Button> 
-             </a> 
+             <BoutonWhatsAppDirect produit={produit} lienWhatsApp={lienWhatsApp} /> 
            </div> 
  
            <p className="text-xs text-gray-400 text-center"> 

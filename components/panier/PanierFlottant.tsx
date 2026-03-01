@@ -5,6 +5,8 @@ import { usePanier } from './PanierContext'
 import { ShoppingCart, X, Plus, Minus, Trash2, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { supabase } from '@/lib/supabase/client'
+import { toast } from 'sonner'
 
 export default function PanierFlottant() {
   const { items, ajouterProduit, retirerProduit, supprimerProduit, totalPrix, nombreArticles } = usePanier()
@@ -20,10 +22,31 @@ export default function PanierFlottant() {
     return acc
   }, {} as Record<string, typeof items>)
 
-  const envoyerCommandeWhatsApp = (boutiqueNom: string, itemsBoutique: typeof items) => {
+  const envoyerCommandeWhatsApp = async (boutiqueNom: string, itemsBoutique: typeof items) => {
     const boutique = itemsBoutique[0]?.boutique
     if (!boutique?.whatsapp) return
 
+    // 1. Décrémenter le stock dans Supabase pour chaque article (si stock fini)
+    try {
+      const updates = itemsBoutique
+        .filter(item => !item.stock_illimite && item.stock !== null)
+        .map(async (item) => {
+          const nouveauStock = Math.max(0, (item.stock || 0) - item.quantite)
+          return supabase
+            .from('produits')
+            .update({ stock: nouveauStock })
+            .eq('id', item.id)
+        })
+
+      if (updates.length > 0) {
+        await Promise.all(updates)
+      }
+    } catch (error) {
+      console.error('Erreur décrémentation stock:', error)
+      toast.error('Un problème est survenu lors de la mise à jour du stock')
+    }
+
+    // 2. Préparer et envoyer le message WhatsApp
     let message = `Bonjour ! Je souhaite commander les produits suivants de votre boutique "${boutiqueNom}" sur BéninMarket :\n\n`
     
     itemsBoutique.forEach((item) => {

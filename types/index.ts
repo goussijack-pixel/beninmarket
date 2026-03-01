@@ -32,6 +32,8 @@ export interface Profile {
    images: string[] 
    categorie: string | null 
    statut: string 
+   stock: number | null 
+   stock_illimite: boolean 
    boutique?: Boutique 
    created_at: string 
  } 
