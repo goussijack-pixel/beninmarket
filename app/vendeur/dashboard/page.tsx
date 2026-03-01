@@ -6,6 +6,7 @@
  import { supabase } from '@/lib/supabase/client' 
  import { Button } from '@/components/ui/button' 
  import { Store, Package, Plus, LogOut } from 'lucide-react' 
+ import { toast } from 'sonner' 
  
  export default function DashboardVendeur() { 
    const router = useRouter() 
@@ -117,6 +118,32 @@
              <Link href="/vendeur/boutique/modifier"> 
                <Button variant="outline" size="sm">Modifier</Button> 
              </Link> 
+           </div> 
+ 
+           {/* Lien de la boutique */} 
+           <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6"> 
+             <p className="text-sm font-medium text-gray-700 mb-2">🔗 Lien de votre boutique</p> 
+             <div className="flex items-center gap-2"> 
+               <input 
+                 readOnly 
+                 value={`https://beninmarket.netlify.app/boutiques/${boutique.slug}`} 
+                 className="flex-1 text-sm bg-white border rounded-lg px-3 py-2 text-gray-600 truncate" 
+               /> 
+               <Button 
+                 onClick={() => { 
+                   navigator.clipboard.writeText(`https://beninmarket.netlify.app/boutiques/${boutique.slug}`) 
+                   toast.success('Lien copié !') 
+                 }} 
+                 variant="outline" 
+                 size="sm" 
+                 className="flex-shrink-0" 
+               > 
+                 Copier 
+               </Button> 
+             </div> 
+             <p className="text-xs text-gray-400 mt-2"> 
+               Partagez ce lien sur WhatsApp, Facebook, TikTok... 
+             </p> 
            </div> 
  
            {/* Actions rapides */} 
