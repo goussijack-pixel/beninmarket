@@ -18,6 +18,15 @@
            <span className="font-bold text-xl text-primary">BéninMarket</span> 
          </Link> 
  
+         <nav className="hidden md:flex items-center gap-6 text-sm font-medium"> 
+           <Link href="/produits" className="text-gray-600 hover:text-primary transition"> 
+             Produits 
+           </Link> 
+           <Link href="/boutiques" className="text-gray-600 hover:text-primary transition"> 
+             Boutiques 
+           </Link> 
+         </nav> 
+ 
          {/* Barre de recherche - desktop */} 
          <div className="hidden md:flex flex-1 max-w-md mx-8"> 
            <div className="relative w-full"> 
@@ -62,6 +71,12 @@
                className="w-full pl-10 pr-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary" 
              /> 
            </div> 
+           <Link href="/produits" onClick={() => setMenuOuvert(false)} className="text-gray-700 font-medium py-2"> 
+             Produits 
+           </Link> 
+           <Link href="/boutiques" onClick={() => setMenuOuvert(false)} className="text-gray-700 font-medium py-2"> 
+             Boutiques 
+           </Link> 
            <Link href="/connexion" onClick={() => setMenuOuvert(false)}> 
              <Button variant="ghost" className="w-full">Connexion</Button> 
            </Link> 

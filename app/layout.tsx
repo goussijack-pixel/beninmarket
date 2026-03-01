@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
  import './globals.css' 
  import Header from '@/components/layout/Header' 
  import Footer from '@/components/layout/Footer' 
+ import { PanierProvider } from '@/components/panier/PanierContext' 
+ import PanierFlottant from '@/components/panier/PanierFlottant' 
  
  const geist = Geist({ subsets: ['latin'] }) 
  
@@ -19,11 +21,14 @@ import type { Metadata } from 'next'
    return ( 
      <html lang="fr"> 
        <body className={geist.className}> 
-         <Header /> 
-         <main className="min-h-screen"> 
-           {children} 
-         </main> 
-         <Footer /> 
+         <PanierProvider> 
+           <Header /> 
+           <main className="min-h-screen"> 
+             {children} 
+           </main> 
+           <Footer /> 
+           <PanierFlottant /> 
+         </PanierProvider> 
        </body> 
      </html> 
    ) 

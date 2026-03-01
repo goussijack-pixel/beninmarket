@@ -6,8 +6,9 @@ import { createClient } from '@/lib/supabase/server'
  export default async function ProduitsPage({ 
    searchParams, 
  }: { 
-   searchParams: { categorie?: string; q?: string } 
+   searchParams: Promise<{ categorie?: string; q?: string }> 
  }) { 
+   const params = await searchParams 
    const supabase = await createClient() 
  
    let query = supabase 
@@ -16,12 +17,25 @@ import { createClient } from '@/lib/supabase/server'
      .eq('statut', 'actif') 
      .order('created_at', { ascending: false }) 
  
-   if (searchParams.categorie) { 
-     query = query.eq('categorie', searchParams.categorie) 
+   let nomCategorieAffiche = ''
+   if (params.categorie) { 
+     const mapCategories: Record<string, string> = { 
+       'mode': 'Mode & Vêtements', 
+       'electronique': 'Électronique', 
+       'alimentation': 'Alimentation', 
+       'maison': 'Maison & Déco', 
+       'beaute': 'Beauté & Santé', 
+       'agriculture': 'Agriculture', 
+       'artisanat': 'Artisanat', 
+       'services': 'Services', 
+       'autre': 'Autre', 
+     } 
+     nomCategorieAffiche = mapCategories[params.categorie] || params.categorie 
+     query = query.eq('categorie', nomCategorieAffiche) 
    } 
  
-   if (searchParams.q) { 
-     query = query.ilike('nom', `%${searchParams.q}%`) 
+   if (params.q) { 
+     query = query.ilike('nom', `%${params.q}%`) 
    } 
  
    const { data: produits } = await query 
@@ -32,10 +46,10 @@ import { createClient } from '@/lib/supabase/server'
        {/* Titre + recherche */} 
        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8"> 
          <h1 className="text-2xl font-bold text-gray-900"> 
-           {searchParams.categorie 
-             ? `Catégorie : ${searchParams.categorie}` 
-             : searchParams.q 
-             ? `Résultats pour "${searchParams.q}"` 
+           {nomCategorieAffiche 
+             ? `Catégorie : ${nomCategorieAffiche}` 
+             : params.q 
+             ? `Résultats pour "${params.q}"` 
              : 'Tous les produits'} 
          </h1> 
          <div className="relative max-w-sm w-full"> 
@@ -43,7 +57,7 @@ import { createClient } from '@/lib/supabase/server'
            <input 
              type="text" 
              placeholder="Rechercher..." 
-             defaultValue={searchParams.q} 
+             defaultValue={params.q} 
              className="w-full pl-10 pr-4 py-2 border rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary" 
            /> 
          </div> 

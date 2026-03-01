@@ -12,6 +12,7 @@ import Link from 'next/link'
      { nom: 'Agriculture', icone: '🌿', slug: 'agriculture' }, 
      { nom: 'Artisanat', icone: '🎨', slug: 'artisanat' }, 
      { nom: 'Services', icone: '🔧', slug: 'services' }, 
+     { nom: 'Autre', icone: '📦', slug: 'autre' }, 
    ] 
  
    return ( 

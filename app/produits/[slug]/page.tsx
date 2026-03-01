@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/server'
  import { Button } from '@/components/ui/button' 
  import Link from 'next/link' 
  import Image from 'next/image' 
+ import GalerieImages from '@/components/produits/GalerieImages' 
+ import BoutonAjouterPanier from '@/components/panier/BoutonAjouterPanier' 
  
  export default async function DetailProduitPage({ 
    params, 
@@ -42,38 +44,7 @@ import { createClient } from '@/lib/supabase/server'
        <div className="grid grid-cols-1 md:grid-cols-2 gap-10"> 
  
          {/* Images */} 
-         <div className="space-y-3"> 
-           <div className="aspect-square bg-gray-100 rounded-2xl overflow-hidden relative"> 
-             {produit.images && produit.images[0] ? ( 
-               <Image 
-                 src={produit.images[0]} 
-                 alt={produit.nom} 
-                 fill 
-                 className="object-cover" 
-               /> 
-             ) : ( 
-               <div className="w-full h-full flex items-center justify-center text-7xl"> 
-                 🛍️ 
-               </div> 
-             )} 
-           </div> 
- 
-           {/* Miniatures */} 
-           {produit.images && produit.images.length > 1 && ( 
-             <div className="flex gap-2 overflow-x-auto"> 
-               {produit.images.map((img: string, i: number) => ( 
-                 <div key={i} className="relative w-20 h-20 flex-shrink-0"> 
-                   <Image 
-                     src={img} 
-                     alt={`${produit.nom} ${i + 1}`} 
-                     fill 
-                     className="object-cover rounded-lg border-2 border-transparent hover:border-primary cursor-pointer" 
-                   /> 
-                 </div> 
-               ))} 
-             </div> 
-           )} 
-         </div> 
+         <GalerieImages images={produit.images || []} nom={produit.nom} /> 
  
          {/* Infos produit */} 
          <div className="flex flex-col gap-4"> 
@@ -94,18 +65,22 @@ import { createClient } from '@/lib/supabase/server'
              <p className="text-gray-600 leading-relaxed">{produit.description}</p> 
            )} 
  
-           {/* Bouton WhatsApp */} 
-           <a 
-             href={lienWhatsApp} 
-             target="_blank" 
-             rel="noopener noreferrer" 
-             className="w-full" 
-           > 
-             <Button className="w-full bg-green-500 hover:bg-green-600 text-white py-6 text-lg gap-3 rounded-xl"> 
-               <MessageCircle className="w-6 h-6" /> 
-               Commander via WhatsApp 
-             </Button> 
-           </a> 
+           {/* Boutons d'action */} 
+           <div className="flex flex-col gap-3"> 
+             <BoutonAjouterPanier produit={produit} fullWidth /> 
+             
+             <a 
+               href={lienWhatsApp} 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               className="w-full" 
+             > 
+               <Button variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-50 hover:text-green-700 py-6 text-lg gap-3 rounded-xl"> 
+                 <MessageCircle className="w-6 h-6" /> 
+                 Commander via WhatsApp 
+               </Button> 
+             </a> 
+           </div> 
  
            <p className="text-xs text-gray-400 text-center"> 
              Vous serez redirigé vers WhatsApp pour contacter le vendeur 

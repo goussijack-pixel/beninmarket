@@ -160,6 +160,20 @@
                        <p className="text-primary font-bold text-sm"> 
                          {produit.prix.toLocaleString('fr-FR')} FCFA 
                        </p> 
+                       {/* Badge stock */} 
+                       {produit.stock_illimite ? ( 
+                         <span className="text-[10px] text-green-600 bg-green-50 px-2 py-0.5 rounded-full font-medium"> 
+                           Stock illimité 
+                         </span> 
+                       ) : produit.stock === 0 ? ( 
+                         <span className="text-[10px] text-red-500 bg-red-50 px-2 py-0.5 rounded-full font-medium"> 
+                           Rupture de stock 
+                         </span> 
+                       ) : ( 
+                         <span className="text-[10px] text-orange-500 bg-orange-50 px-2 py-0.5 rounded-full font-medium"> 
+                           {produit.stock} en stock 
+                         </span> 
+                       )} 
                      </div> 
                    </div> 
                    <div className="flex gap-2"> 

@@ -13,9 +13,14 @@ import { createServerClient } from '@supabase/ssr'
            return cookieStore.getAll() 
          }, 
          setAll(cookiesToSet) { 
-           cookiesToSet.forEach(({ name, value, options }) => 
-             cookieStore.set(name, value, options) 
-           ) 
+           try { 
+             cookiesToSet.forEach(({ name, value, options }) => 
+               cookieStore.set(name, value, options) 
+             ) 
+           } catch (error) { 
+             // Le middleware gérera le rafraîchissement des cookies. 
+             // On ignore l'erreur si on est dans un Server Component. 
+           } 
          }, 
        }, 
      } 

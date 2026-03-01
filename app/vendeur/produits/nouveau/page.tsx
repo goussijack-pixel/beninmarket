@@ -25,6 +25,8 @@
      description: '', 
      prix: '', 
      categorie: '', 
+     stock: '0', 
+     stock_illimite: false, 
    }) 
  
    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => { 
@@ -99,15 +101,17 @@
  
      // Créer le produit 
      const { error } = await supabase.from('produits').insert({ 
-       boutique_id: boutique.id, 
-       nom: form.nom, 
-       slug: genererSlug(form.nom), 
-       description: form.description, 
-       prix: parseInt(form.prix), 
-       categorie: form.categorie, 
-       images: imageUrls, 
-       statut: 'actif', 
-     }) 
+         boutique_id: boutique.id, 
+         nom: form.nom, 
+         slug: genererSlug(form.nom), 
+         description: form.description, 
+         prix: parseInt(form.prix), 
+         categorie: form.categorie, 
+         images: imageUrls, 
+         stock: form.stock_illimite ? null : parseInt(form.stock), 
+         stock_illimite: form.stock_illimite, 
+         statut: 'actif', 
+       }) 
  
      if (error) { 
        setErreur('Erreur lors de la création du produit') 
@@ -217,6 +221,33 @@
                <option key={cat} value={cat}>{cat}</option> 
              ))} 
            </select> 
+         </div> 
+ 
+         {/* Stock */} 
+         <div> 
+           <Label>Stock disponible</Label> 
+           <div className="mt-2 flex items-center gap-3"> 
+             <label className="flex items-center gap-2 cursor-pointer"> 
+               <input 
+                 type="checkbox" 
+                 checked={form.stock_illimite} 
+                 onChange={(e) => setForm({ ...form, stock_illimite: e.target.checked })} 
+                 className="w-4 h-4 accent-primary" 
+               /> 
+               <span className="text-sm text-gray-600">Stock illimité</span> 
+             </label> 
+           </div> 
+           {!form.stock_illimite && ( 
+             <Input 
+               type="number" 
+               name="stock" 
+               placeholder="Ex: 10" 
+               value={form.stock} 
+               onChange={handleChange} 
+               min="0" 
+               className="mt-2" 
+             /> 
+           )} 
          </div> 
  
          <Button 
