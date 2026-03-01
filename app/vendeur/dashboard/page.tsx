@@ -126,12 +126,12 @@
              <div className="flex items-center gap-2"> 
                <input 
                  readOnly 
-                 value={`https://beninmarket.netlify.app/boutiques/${boutique.slug}`} 
+                 value={`https://beninmarket-production.up.railway.app/boutiques/${boutique.slug}`} 
                  className="flex-1 text-sm bg-white border rounded-lg px-3 py-2 text-gray-600 truncate" 
                /> 
                <Button 
                  onClick={() => { 
-                   navigator.clipboard.writeText(`https://beninmarket.netlify.app/boutiques/${boutique.slug}`) 
+                   navigator.clipboard.writeText(`https://beninmarket-production.up.railway.app/boutiques/${boutique.slug}`) 
                    toast.success('Lien copié !') 
                  }} 
                  variant="outline" 
