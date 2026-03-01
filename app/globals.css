@@ -32,32 +32,115 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.65 0.18 45);       /* Orange BéninMarket */
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --radius: 0.75rem;
+
+  /* ── Fond sombre premium ── */
+  --background: oklch(0.08 0 0);         /* #0a0a0a */
+  --foreground: oklch(0.95 0 0);         /* blanc cassé */
+
+  /* ── Cards ── */
+  --card: oklch(0.11 0 0);               /* #0f0f0f */
+  --card-foreground: oklch(0.95 0 0);
+
+  /* ── Popover ── */
+  --popover: oklch(0.11 0 0);
+  --popover-foreground: oklch(0.95 0 0);
+
+  /* ── Primary : doré ambré ── */
+  --primary: oklch(0.78 0.16 75);        /* amber-400 */
+  --primary-foreground: oklch(0.08 0 0); /* noir sur doré */
+
+  /* ── Secondary ── */
+  --secondary: oklch(0.15 0 0);
+  --secondary-foreground: oklch(0.85 0 0);
+
+  /* ── Muted ── */
+  --muted: oklch(0.15 0 0);
+  --muted-foreground: oklch(0.50 0 0);
+
+  /* ── Accent ── */
+  --accent: oklch(0.15 0 0);
+  --accent-foreground: oklch(0.85 0 0);
+
+  /* ── Destructive ── */
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.65 0.18 45);
+
+  /* ── Border & Input ── */
+  --border: oklch(0.20 0 0);             /* bordures subtiles */
+  --input: oklch(0.15 0 0);
+  --ring: oklch(0.78 0.16 75);           /* focus doré */
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  /* Scrollbar premium */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0a0a0a;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #fbbf24;
+  }
+
+  /* Sélection de texte dorée */
+  ::selection {
+    background: rgba(251, 191, 36, 0.25);
+    color: #fbbf24;
+  }
+
+  /* Masquer scrollbar horizontale sur mobile */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ── Animations globales ── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.15); }
+  50% { box-shadow: 0 0 40px rgba(251, 191, 36, 0.30); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ── Gradient text utilitaire ── */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #fbbf24, #f97316);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
